@@ -31,6 +31,7 @@ namespace EDennis.Samples.AddUpdateJsonField.Lib {
                         reader.Value.ToString() == fieldName) {
                         await writer.WritePropertyNameAsync(fieldName);
                         await writer.WriteValueAsync(value);
+                        await reader.ReadAsync(); //read and ignore current value for target field
                         currentObjectHasTargetField = true; //to not add target field at end of object
                     } else {
                         switch (reader.TokenType) {
@@ -56,6 +57,10 @@ namespace EDennis.Samples.AddUpdateJsonField.Lib {
                                 break;
                             case JsonToken.EndArray:
                                 await writer.WriteEndArrayAsync();
+                                break;
+                            case JsonToken.EndObject:
+                                await writer.WriteEndObjectAsync();
+                                currentObjectHasTargetField = false; //reinitialize
                                 break;
                             case JsonToken.Comment:
                                 await writer.WriteCommentAsync(reader.Value.ToString());
@@ -90,6 +95,7 @@ namespace EDennis.Samples.AddUpdateJsonField.Lib {
                         reader.Value.ToString() == fieldName) {
                         await writer.WritePropertyNameAsync(fieldName);
                         await writer.WriteValueAsync(value);
+                        await reader.ReadAsync(); //read and ignore current value for target field
                         currentObjectHasTargetField = true; //to not add target field at end of object
                     } else {
                         switch (reader.TokenType) {
@@ -115,6 +121,10 @@ namespace EDennis.Samples.AddUpdateJsonField.Lib {
                                 break;
                             case JsonToken.EndArray:
                                 await writer.WriteEndArrayAsync();
+                                break;
+                            case JsonToken.EndObject:
+                                await writer.WriteEndObjectAsync();
+                                currentObjectHasTargetField = false; //reinitialize
                                 break;
                             case JsonToken.Comment:
                                 await writer.WriteCommentAsync(reader.Value.ToString());
